@@ -125,26 +125,26 @@ class New2048:
 				for j in xrange(self.size):
 					self.grid[j][i] = temp2[j]
 		else:
-			q = raw_input("Do you want to quit the game?(y/n):")
-			if q in ['y','Y']:exit()
+			if raw_input("Do you want to quit the game?(y/n):") in ['y','Y']:exit()
 			else:self.settleDown(raw_input("Move: "))
 	def start(self):
 		self.addNewNumber()
 		self.addNewNumber()
 		while True:
 			self.printGrid()
-			self.settleDown(raw_input("Move: "))
-			self.addNewNumber()
+			op = raw_input("Move: ")
+			if op != "" and op != None:
+				self.settleDown(op)
+				self.addNewNumber()
 			if self.isOver():
 				self.printGrid()
 				print "Game Over, your Score: ",self.score
 				exit()
 def Main():
-	print "Stating the game engine...\n\t\t	 Press 'a' to move the Grid Left\n\t\t	 Press 's' to move the Grid Down\n\t\t	 Press 'd' to move the Grid Right\n\t\t	 Press 'w' to move the Grid Up\n\t\t	 At anytime press 'Ctrl+c' to exit"
+	print "Starting the game engine...\n\t\t	 Press 'a' to move the Grid Left\n\t\t	 Press 's' to move the Grid Down\n\t\t	 Press 'd' to move the Grid Right\n\t\t	 Press 'w' to move the Grid Up\n\t\t	 At anytime press 'Ctrl+c' to exit"
 	size = -1
 	while size<2:size = int(raw_input("Enter the size of the grid(greater than 1 please): "))
-	game = New2048(size)
-	game.start()
+	New2048(size).start()
 if __name__ == '__main__':
 	try:Main()
 	except KeyboardInterrupt:print "\nExiting.."
