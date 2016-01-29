@@ -19,14 +19,9 @@ class New2048:
 			print "\n"+"_"*self.rowsize
 		print "Score: ",self.score
 	def isOver(self):
-		if self.getRandomEmptyCell() != None:return False
-		for i in self.grid:
-			for j in xrange(1,self.size):
-				if i[j] == i[j-1]:
-					return False
-		for i in xrange(1,self.size):
-			for j in xrange(self.size):
-				if self.grid[i][j] == self.grid[i-1][j]:
+		for i in xrange(self.size):
+			for j in xrange(i,self.size-1):
+				if self.grid[i][j] == self.grid[i][j+1] or self.grid[j][i] == self.grid[j+1][i] or ' ' in [self.grid[i][j], self.grid[i][j+1], self.grid[j][i], self.grid[j+1][i]]:
 					return False
 		return True
 	def getRandomEmptyCell(self):
@@ -43,14 +38,17 @@ class New2048:
 			i,j = new_cell
 			self.grid[i][j] = 2
 			return True
+	def cleanRow(self,row):
+		temp = []
+		for j in row:
+			if j != " ":
+				temp.append(j)
+		return temp
 	def settleDown(self, op):
-		if op in "aaaAAA":
+		if op in "aaAA":
 			for i in range(0, self.size):
 				row = self.grid[i]
-				temp = []
-				for j in row:
-					if j != " ":
-						temp.append(j)
+				temp = self.cleanRow(row)
 				if len(temp)>1:
 					t = 1
 					while t < len(temp):
@@ -62,13 +60,10 @@ class New2048:
 						else:t += 1
 				temp.extend([" "]*(self.size-len(temp)))
 				self.grid[i] = temp
-		elif op in "dddDDD":
+		elif op in "ddDD":
 			for i in range(0, self.size):
 				row = self.grid[i]
-				temp = []
-				for j in row:
-					if j != " ":
-						temp.append(j)
+				temp = self.cleanRow(row)
 				if len(temp)>1:
 					t = len(temp)-2
 					while t >= 0:
@@ -81,15 +76,12 @@ class New2048:
 				temp2 = [" "]*(self.size-len(temp))
 				temp2.extend(temp)
 				self.grid[i] = temp2
-		elif op in "wwwWWW":
+		elif op in "wwWW":
 			for i in xrange(self.size):
 				column = []
 				for j in xrange(self.size):
 					column.append(self.grid[j][i])
-				temp = []
-				for j in column:
-					if j != " ":
-						temp.append(j)
+				temp = self.cleanRow(column)
 				if len(temp)>1:
 					t = 1
 					while t < len(temp):
@@ -102,15 +94,12 @@ class New2048:
 				temp.extend([" "]*(self.size-len(temp)))
 				for j in xrange(self.size):
 					self.grid[j][i] = temp[j]
-		elif op in "sssSSS":
+		elif op in "ssSS":
 			for i in xrange(self.size):
 				column = []
 				for j in xrange(self.size):
 					column.append(self.grid[j][i])
-				temp = []
-				for j in column:
-					if j != " ":
-						temp.append(j)
+				temp = self.cleanRow(column)
 				if len(temp)>1:
 					t = len(temp)-2
 					while t >= 0:
